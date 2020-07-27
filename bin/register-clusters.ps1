@@ -9,23 +9,31 @@ $config_directory = "${root_directory}/config"
 
 #gcloud iam service-accounts list
 
-if (!(Test-Path -path $TOKEN_DIR))
+for ( $i=0; $i -lt $clusters.length;  $i++)
 {
-   New-Item -ItemType directory -Path ${TOKEN_DIR}
-}
-
-foreach ($cluster in $clusters)
-{
+   $cluster = $clusters[$i]
    echo "Register cluster: $cluster"
-   gcloud container hub memberships register $cluster `
-     --project=${PROJECT_ID} `
-     --context=${cluster} `
-     --kubeconfig=${KUBECONFIG_PATH} `
-     --service-account-key-file=${LOCAL_KEY_PATH}
+   if ($cluster_is_gke[$i])
+   {
+     $zone = $zones[$i]
+     gcloud container hub memberships register $cluster `
+       --project=${PROJECT_ID} `
+       --gke-cluster=$zone/${cluster} `
+       --service-account-key-file=${LOCAL_KEY_PATH}
+   }
+   else
+   {
+     gcloud container hub memberships register $cluster `
+       --project=${PROJECT_ID} `
+       --context=${cluster} `
+       --kubeconfig=${KUBECONFIG_PATH} `
+       --service-account-key-file=${LOCAL_KEY_PATH}
+   }  
 
    kubectl apply -f ${config_directory}/node-reader.yaml 
 
-   #Creating and authorizing a KSA
+   #https://cloud.google.com/anthos/multicluster-management/console/logging-in
+   #Creating and authorizing a Kubernetes service account (KSA)
    $KSA_NAME = "ksa-${cluster}"
    $VIEW_BINDING_NAME = "view-role-ksa-${cluster}"
    $NODE_READER_BINDING_NAME = "node-reader-role-ksa-${cluster}"
@@ -35,9 +43,9 @@ foreach ($cluster in $clusters)
    kubectl create clusterrolebinding ${NODE_READER_BINDING_NAME} --clusterrole node-reader --serviceaccount default:${KSA_NAME}
    kubectl create clusterrolebinding ${BINDING_NAME} --clusterrole cluster-admin --serviceaccount default:${KSA_NAME}
 
-   $VIEW_BINDING_NAME = "view-role-${USER_INITIAL}"
-   $NODE_READER_BINDING_NAME = "node-reader-role-${USER_INITIAL}"
-   $BINDING_NAME = "cluster-admin-role-ksa-${USER_INITIAL}"
+   $VIEW_BINDING_NAME = "view-role-${USER_INITIAL}-${cluster}"
+   $NODE_READER_BINDING_NAME = "node-reader-role-${USER_INITIAL}-${cluster}"
+   $BINDING_NAME = "cluster-admin-role-ksa-${USER_INITIAL}-${cluster}"
    kubectl create clusterrolebinding ${VIEW_BINDING_NAME} --clusterrole view --user default:${GCP_EMAIL_ADDRESS}
    kubectl create clusterrolebinding ${NODE_READER_BINDING_NAME} --clusterrole node-reader --user default:${GCP_EMAIL_ADDRESS}
    kubectl create clusterrolebinding ${BINDING_NAME} --clusterrole cluster-admin --user default:${GCP_EMAIL_ADDRESS}
