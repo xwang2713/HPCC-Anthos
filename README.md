@@ -36,3 +36,12 @@ Add your user name initial to $USER_INITIAL
 ## Setup and Configure Anthos
 ./bin/setup.ps1  (I didn't fully test this)
 ./register-clusters.ps1 (tested with AWS EKS)
+
+
+## register clusters
+
+## Install Config Management
+
+## Install istio
+
+## Unregister clusters
