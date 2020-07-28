@@ -13,6 +13,7 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
 {
    $cluster = $clusters[$i]
    echo "Register cluster: $cluster"
+   kubectl config use-context $cluster
    if ($cluster_is_gke[$i])
    {
      $zone = $zones[$i]

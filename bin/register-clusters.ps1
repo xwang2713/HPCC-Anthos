@@ -13,6 +13,7 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
 {
    $cluster = $clusters[$i]
    echo "Register cluster: $cluster"
+   kubectl config use-context $cluster 
    if ($cluster_is_gke[$i])
    {
      $zone = $zones[$i]
@@ -53,5 +54,6 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    #Get the KSA's beaer token
    $SECRET_NAME=$(kubectl get serviceaccount ${KSA_NAME} -o jsonpath='{$.secrets[0].name}')
    $encoded_token=$(kubectl get secret ${SECRET_NAME} -o jsonpath='{$.data.token}')
+   echo "create and save token to ${TOKEN_DIR}/${cluster}"
    [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(${encoded_token})) > ${TOKEN_DIR}/${cluster}
 }
