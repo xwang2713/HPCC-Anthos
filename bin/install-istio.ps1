@@ -20,7 +20,7 @@ if (!(Test-Path ${istio_package_path} -PathType Leaf))
   Invoke-WebRequest -Uri https://storage.googleapis.com/gke-release/asm/${istio_package_base}-win.zip.1.sig -OutFile ${DOWNLOAD_DIR}/${istio_package_base}-win.zip.1.sig
   Try 
   {
-    if (Get-Command openssl)
+    if (Get-Command openssl -errorAction SilentlyContinue)
     {
       echo "openssl verify download istio package signature ..."
      # Beware following key is only for this ISTIO package.
@@ -48,6 +48,7 @@ if ( $Env:Path.Indexof("${DOWNLOAD_DIR}/${istio_package_base}/bin") -eq -1)
 for ( $i=0; $i -lt $clusters.length;  $i++)
 {
   $cluster = $clusters[$i]
+  $region_zone = $region_zones[$i]
   "Ininstall Istio on $cluster"
   kubectl config use-context $cluster
   kubectl create clusterrolebinding cluster-admin-binding `
@@ -56,13 +57,23 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
 
   if ($cluster_is_gke[$i])
   {
-     $asm_profile = "asm-gcp"
+     if ( -Node (Get-Command openssl) )
+     {
+        gcloud components install kpt
+	kpt pkg get  https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm@release-1.6-asm .
+	kpt cfg set asm gcloud.container.cluster ${cluster}
+        kpt cfg set asm gcloud.core.project ${PROJECT_ID}
+        kpt cfg set asm gcloud.compute.location ${region_zone}
+        istioctl install -f asm/cluster/istio-operator.yaml
+
+        Remove-Item 'asm' -Recurse
+     }
   }
   else
   {
      $asm_profile =  "asm-multicloud"
+     "Profile:  ${asm_profile}"
+     istioctl.exe install --set profile=${asm_profile}
   }
-
-  istioctl.exe install --set profile=${asm_profile}
 } 
 
