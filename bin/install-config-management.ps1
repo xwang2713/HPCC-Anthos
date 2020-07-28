@@ -19,10 +19,7 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
   $cluster = $clusters[$i]
   "Ininstall Anthos-config-management on $cluster"
   kubectl config use-context $cluster
-  #kubectl apply -f ${cfg_mgt_operator_yaml}
+  kubectl apply -f ${cfg_mgt_operator_yaml}
   kubectl apply -f ${config_directory}/config-management.yaml --context $cluster
-  #if ($cluster_is_gke[$i])
-  #{
-  #}
 } 
 
