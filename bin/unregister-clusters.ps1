@@ -14,12 +14,12 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    $cluster = $clusters[$i]
    echo "Register cluster: $cluster"
    kubectl config use-context $cluster
-   if ($cluster_is_gke[$i])
+   if ($cluster_types[$i] -eq "gcp")
    {
-     $zone = $zones[$i]
+     $region_zone = $region_zones[$i]
      gcloud container hub memberships unregister $cluster `
        --project=${PROJECT_ID} `
-       --gke-cluster=$zone/${cluster}
+       --gke-cluster=$region_zone/${cluster}
    }
    else
    {

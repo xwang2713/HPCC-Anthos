@@ -14,12 +14,36 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    $cluster = $clusters[$i]
    echo "Register cluster: $cluster"
    kubectl config use-context $cluster 
-   if ($cluster_is_gke[$i])
+   if ($cluster_types[$i] -eq "gcp")
    {
-     $zone = $zones[$i]
+     $region_zone = $region_zones[$i]
+     $PROJECT_NUMBER = $(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")
+     $Env:PROJECT_NUMBER = ${PROJECT_NUMBER}
+     $Env:CLUSTER_NAME = ${cluster}
+     $Env:CLUSTER_LOCATION = ${region_zone}
+     $Env:WORKLOAD_POOL = "${PROJECT_ID}.svc.id.goog"
+     $Env:MESH_ID = "proj-${PROJECT_NUMBER}"
+ 
+     if ($use_region)
+     {
+       gcloud config set compute/region ${region_zone} # not support yet
+     }
+     else
+     {
+       gcloud config set compute/zone ${region_zone}
+     }
+
+     gcloud container clusters update ${cluster} --update-labels=mesh_id=${Env:MESH_ID}
+     gcloud container clusters update ${cluster} --workload-pool=${Env:WORKLOAD_POOL}
+     gcloud container clusters update ${cluster} --enable-stackdriver-kubernetes
+
+     kubectl create clusterrolebinding cluster-admin-binding `
+       --clusterrole=cluster-admin `
+       --user=${GCP_EMAIL_ADDRESS}
+
      gcloud container hub memberships register $cluster `
        --project=${PROJECT_ID} `
-       --gke-cluster=$zone/${cluster} `
+       --gke-cluster=$region_zone/${cluster} `
        --service-account-key-file=${LOCAL_KEY_PATH}
    }
    else

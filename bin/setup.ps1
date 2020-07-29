@@ -6,11 +6,20 @@ $repo_parent_directory = Split-Path -Path ${root_directory} -Parent
 
 .  ${bin_directory}/env.ps1
 
+#---------------------
+# pre-requisities
+# git bash
+# helm
+# google sdk
+
 #gcloud auth login
 #gcloud components install beta
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} `
  --member user:${GCP_EMAIL_ADDRESS} `
+ --role roles/editor `
+ --role roles/computer.admin `
+ --role roles/container.admin `
  --role=roles/gkehub.admin `
  --role=roles/iam.serviceAccountAdmin `
  --role=roles/iam.serviceAccountKeyAdmin `
@@ -19,6 +28,10 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} `
 gcloud services enable `
  --project=${PROJECT_ID} `
  container.googleapis.com `
+ compute.googleapis.com `
+ monitoring.googleapis.com `
+ logging.googleapis.com `
+ cloudtrace.googleapis.com `
  gkeconnect.googleapis.com `
  gkehub.googleapis.com `
  cloudresourcemanager.googleapis.com `
@@ -53,7 +66,7 @@ kubectl auth can-i '*' '*' --all-namespaces
 
 
 # Install nomos.exe
-$nomos = ${repo_parent_directory}/nomos.exe 
+$nomos = ${BUILD_DIR}/nomos.exe 
 if (!(Test-Path $nomos -PathType Leaf))
 {
   gsutil cp gs://config-management-release/released/latest/windows_amd64/nomos.exe  $nomos
@@ -61,7 +74,7 @@ if (!(Test-Path $nomos -PathType Leaf))
  
 
 # install kpt
-# gcloud components install kpt
+gcloud components install kpt
 
 # install kustomize
 # choco install kustomize

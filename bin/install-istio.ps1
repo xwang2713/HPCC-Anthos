@@ -55,7 +55,7 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
     --clusterrole=cluster-admin `
     --user=${GCP_EMAIL_ADDRESS}
 
-  if ($cluster_is_gke[$i])
+  if ($cluster_types[$i] -eq "gcp")
   {
      if ( -Node (Get-Command openssl) )
      {
