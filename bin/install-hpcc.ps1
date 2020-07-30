@@ -10,14 +10,22 @@ $config_directory = "${root_directory}/config"
 $HPCC_PLATFORM_DIR = "${BUILD_DIR}/HPCC-Platform"
 if (!(Test-Path -path $HPCC_PLATFORM_DIR))
 {
-   git clone https://github.com/hpcc-systems/HPCC-Platform.git ${HPCC_PLATFORM_DIR}
+   git clone https://github.com/${git_user}/HPCC-Platform.git ${HPCC_PLATFORM_DIR}
 }
 
 cd ${HPCC_PLATFORM_DIR}
 $hpcc_branch = $(git branch | grep "^*" | grep ${hpcc_version})
 if (${hpcc_branch} -eq $null)
 {
-   git checkout tags/${hpcc_version}
+   $tag = $(git tag | grep ${hpcc_versioin})
+   if ( $tag -eq $null )
+   {
+     git checkout ${hpcc_version}
+   }
+   else
+   {
+     git checkout tags/${hpcc_version}
+   }
 }
 
 
@@ -56,10 +64,10 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    }
    elseif ( $storage_types[$i] -eq "nfs" )
    {
-     helm install nfsstorage hpcc-nfs/
+     helm install nfsstorage examples/nfs/hpcc-nfs/
      sleep 5
      helm install ${hpcc_cluster_name} hpcc/ --set global.image.version=${hpcc_version} `
-         -f examples/local/values-nfs.yaml
+         -f examples/nfs/values-nfs.yaml
    }
    else
    {
