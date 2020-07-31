@@ -60,13 +60,13 @@ gcloud iam service-accounts keys create ${LOCAL_KEY_PATH} `
   --iam-account=${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com `
   --project=${PROJECT_ID}
 
-Check current Google Cloud user havae cluster-admin RBAC role by running:
+#Check current Google Cloud user havae cluster-admin RBAC role by running:
 kubectl auth can-i '*' '*' --all-namespaces
 
 
 
 # Install nomos.exe
-$nomos = ${BUILD_DIR}/nomos.exe 
+$nomos = "${BUILD_DIR}/nomos.exe" 
 if (!(Test-Path $nomos -PathType Leaf))
 {
   gsutil cp gs://config-management-release/released/latest/windows_amd64/nomos.exe  $nomos
