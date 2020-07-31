@@ -39,22 +39,7 @@ $git_user = "xwang2713"
 $global:ProgressPreference = 'SilentlyContinue' 
 
 # -------------------
-# GCP Account
-# To find out run: gcloud config get-value core/account
-$GCP_EMAIL_ADDRESS = "xiaoming.wang@lexisnexis.com"
-$USER_INITIAL = "xw"
-
-# -------------------
-# GCP Project 
-# gcloud projects describe $PROJECT_ID
-$PROJECT_ID = "anthos-hpcc-1"
-$SERVICE_ACCOUNT_NAME = "svc-gke-cluster-1"
-$LOCAL_KEY_PATH  = "$CREDS_DIR/${SERVICE_ACCOUNT_NAME}-${PROJECT_ID}.json"
-$KUBECONFIG_PATH = "~/.kube/config"
-
-# -------------------
 # Directories
-
 $BUILD_DIR = "${repo_parent_directory}/build"
 if (!(Test-Path -path $BUILD_DIR))
 {
@@ -79,3 +64,16 @@ if (!(Test-Path -path $DOWNLOAD_DIR))
    New-Item -ItemType directory -Path ${DOWNLOAD_DIR}
 }
 
+# -------------------
+# GCP Account
+# To find out run: gcloud config get-value core/account
+$GCP_EMAIL_ADDRESS = "xiaoming.wang@lexisnexis.com"
+$USER_INITIAL = "xw"
+
+# -------------------
+# GCP Project 
+# gcloud projects describe $PROJECT_ID
+$PROJECT_ID = "anthos-hpcc-1"
+$SERVICE_ACCOUNT_NAME = "svc-gke-cluster-1"
+$LOCAL_KEY_PATH  = "${CREDS_DIR}/${SERVICE_ACCOUNT_NAME}-${PROJECT_ID}.json"
+$KUBECONFIG_PATH = "~/.kube/config"

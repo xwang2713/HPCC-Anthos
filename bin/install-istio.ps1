@@ -57,17 +57,17 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
 
   if ($cluster_types[$i] -eq "gcp")
   {
-     if ( -Node (Get-Command openssl) )
+     if ( -Not (Get-Command kpt -errorAction SilentlyContinue) )
      {
         gcloud components install kpt
-	kpt pkg get  https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm@release-1.6-asm .
-	kpt cfg set asm gcloud.container.cluster ${cluster}
-        kpt cfg set asm gcloud.core.project ${PROJECT_ID}
-        kpt cfg set asm gcloud.compute.location ${region_zone}
-        istioctl install -f asm/cluster/istio-operator.yaml
-
-        Remove-Item 'asm' -Recurse
      }
+     kpt pkg get  https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git/asm@release-1.6-asm .
+     kpt cfg set asm gcloud.container.cluster ${cluster}
+     kpt cfg set asm gcloud.core.project ${PROJECT_ID}
+     kpt cfg set asm gcloud.compute.location ${region_zone}
+     istioctl install -f asm/cluster/istio-operator.yaml
+
+     Remove-Item 'asm' -Recurse
   }
   else
   {
