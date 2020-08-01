@@ -19,6 +19,7 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
 
    helm uninstall ${hpcc_cluster_name}
    sleep 5
+   kubectl delete pod --all --grace-period=0 --force
    if ( $storage_types[$i] -eq "efs" )
    {
    

@@ -43,7 +43,8 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    }
 
    kubectl config set-context $cluster --namespace=${hpcc_namespace}
-   kubectl label namespace ${hpcc_namespace} istio-injection=enabled
+   kubectl label namespace ${hpcc_namespace} istio-injection=enabled --overwrite
+   #kubectl label namespace ${hpcc_namespace} istio-injection=disabled --overwrite
 
    cd "helm"
    if ( $storage_types[$i] -eq "efs" )
