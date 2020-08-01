@@ -34,14 +34,54 @@ Add your GCP user email to $GCP_EMAIL_ADDRESS
 Add your user name initial to $USER_INITIAL
 
 ## Setup and Configure Anthos
+```console
 ./bin/setup.ps1  (I didn't fully test this)
-./register-clusters.ps1 (tested with AWS EKS)
+```
 
 
 ## register clusters
-
+```console
+./register-clusters.ps1
+```
 ## Install Config Management
+```console
+./bin/install-config-management.ps1
+```
 
-## Install istio
+## Install istio (Service Mesh)
+```console
+./bin/install-istio.ps1
+```
+
+## Install HPCC Cluster
+Be aware only "default" namespace is supported for GKE
+Also use HPCC Docker Cluster hpccsystems/platform-core:pilot-agent and Helm chart from github github.com/xwang2713/HPCC-Platform branch pilog-agent
+```console
+./bin/install-hpcc.ps1
+```
+
+## Monitoring
+### GKE cluster
+From Google Cloud console, go to "Monitoring"/"Service", click "DEFINE SERVICE", select eclwatch entry and click "SUBMIT". This service will show in Anthos Service Mesh dashboard.
+
+### Non GKE cluster
+Following istio/README.md to setup Grafana, Kiali, Prometheus monitorings
+
+## Logging
+### GKE cluster
+
+### Non GKE cluster
+There are "fluentd-elasticsearch" pod installed on each Kubernetes node. User can install related third party components to collect the log data.
+Grafana, Kiali and Prometheus also provie logging which can be configured in above Monitoring section
+
+## Uninstall HPCC Cluster
+```console
+./bin/uninstall-hpcc.ps1
+```
 
 ## Unregister clusters
+```console
+./bin/unregister-clusters.ps1
+```
+
+## Migration

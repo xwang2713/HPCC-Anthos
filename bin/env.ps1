@@ -13,15 +13,15 @@ $use_region = $false
 #$region_zones = @("us-east-1")
 #$storage_types = @("azure")
 
-$cluster_types = @("aws")
-$clusters = @("eks-hpcc-1")
-$region_zones = @("us-east-1")
-$storage_types = @("efs")
+#$cluster_types = @("aws")
+#$clusters = @("eks-hpcc-1")
+#$region_zones = @("us-east-1")
+#$storage_types = @("efs")
 
-#$cluster_types = @("gcp")
-#$clusters = @("gke-hpcc-1")
-#$region_zones = @("us-east1-b")
-#$storage_types = @("nfs")
+$cluster_types = @("gcp")
+$clusters = @("gke-hpcc-1")
+$region_zones = @("us-east1-b")
+$storage_types = @("nfs")
 
 # -------------------
 # GCP Account
@@ -31,8 +31,8 @@ $USER_INITIAL = "xw"
 
 # -------------------
 # HPCC Platform deployment
-$hpcc_namespace = "hpcc-system"
-#$hpcc_namespace = "default"
+#$hpcc_namespace = "hpcc-system"
+$hpcc_namespace = "default"
 $hpcc_version = "pilot-agent"
 #$hpcc_version = "community_7.10.8-1"
 $hpcc_cluster_name = "hpcc-anthos-test"
