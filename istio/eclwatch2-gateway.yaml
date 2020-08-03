@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: eclwatch2-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: eclwatch2
+  namespace: istio-system
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - eclwatch-gateway
+  http:
+  - match:
+      - uri:
+        prefix: /eclway
+    route:
+    - destination:
+        host: eclwatch.hpcc-system.svc.cluster.local
+        post:
+          number: 8010
