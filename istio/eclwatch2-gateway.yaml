@@ -27,9 +27,9 @@ spec:
   http:
   - match:
       - uri:
-        prefix: /eclway
+          prefix: /eclwatch
     route:
     - destination:
         host: eclwatch.hpcc-system.svc.cluster.local
-        post:
+        port:
           number: 8010
