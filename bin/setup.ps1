@@ -64,13 +64,13 @@ gcloud iam service-accounts keys create ${LOCAL_KEY_PATH} `
 kubectl auth can-i '*' '*' --all-namespaces
 
 
-
+# Download nomos.exe may hung on Windows. nomos.exe is not needed so far
 # Install nomos.exe
-$nomos = "${BUILD_DIR}/nomos.exe" 
-if (!(Test-Path $nomos -PathType Leaf))
-{
-  gsutil cp gs://config-management-release/released/latest/windows_amd64/nomos.exe  $nomos
-}
+#$nomos = "${BUILD_DIR}/nomos.exe" 
+#if (!(Test-Path $nomos -PathType Leaf))
+#{
+#  gsutil cp gs://config-management-release/released/latest/windows_amd64/nomos.exe  $nomos
+#}
  
 
 # install kpt

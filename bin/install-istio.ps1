@@ -1,4 +1,11 @@
 # https://cloud.google.com/service-mesh/docs/attached-clusters-install
+# istio install may fail with errors:
+# istio-core failed:  context deadline exceeded
+# istio-ingressgateway failed: resource not ready.
+# Change powsershell as adminitrator may help for the first error.
+# VPN on/off may not help. But I am not sure. With VPN on access Google
+# Kubernetes Cluster will fail, such as swith context, etc.
+
 $bin_directory  = Split-Path $myInvocation.MyCommand.path
 $root_directory = Split-Path -Path ${bin_directory} -Parent
 $repo_parent_directory = Split-Path -Path ${root_directory} -Parent
@@ -13,7 +20,7 @@ $istio_package = "${istio_package_base}-win.zip"
 $istio_package_path = "${DOWNLOAD_DIR}/${istio_package}" 
 
 
-if (!(Test-Path ${istio_package_path} -PathType Leaf))
+if (!(Test-Path -path ${DOWNLOAD_DIR}/${istio_package_base}))
 {
 
   Invoke-WebRequest -Uri https://storage.googleapis.com/gke-release/asm/${istio_package} -OutFile ${DOWNLOAD_DIR}/${istio_package}

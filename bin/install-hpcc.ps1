@@ -7,17 +7,18 @@ $config_directory = "${root_directory}/config"
 
 .  ${bin_directory}/env.ps1
 
-$HPCC_PLATFORM_DIR = "${BUILD_DIR}/HPCC-Platform"
-if (!(Test-Path -path $HPCC_PLATFORM_DIR))
+$HPCC_PLATFORM_DIR = "${BUILD_DIR}/${hpcc_local_name}"
+
+if (!(Test-Path -path ${HPCC_PLATFORM_DIR}))
 {
    git clone https://github.com/${git_user}/HPCC-Platform.git ${HPCC_PLATFORM_DIR}
 }
 
 cd ${HPCC_PLATFORM_DIR}
-$hpcc_branch = $(git branch | grep "^*" | grep ${hpcc_version})
+$hpcc_branch = $(git branch | grep "^*" | grep "${hpcc_version}")
 if (${hpcc_branch} -eq $null)
 {
-   $tag = $(git tag | grep ${hpcc_versioin})
+   $tag = $(git tag | grep ${hpcc_version})
    if ( $tag -eq $null )
    {
      git checkout ${hpcc_version}
