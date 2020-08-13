@@ -10,20 +10,20 @@
 #$storage_types = @("efs", "azure", "nfs")
 $use_region = $false
 
-$cluster_types = @("azure")
-$clusters = @("aks-hpcc-3-admin")
-$region_zones = @("us-east-1")
-$storage_types = @("azure")
+#$cluster_types = @("azure")
+#$clusters = @("aks-hpcc-3-admin")
+#$region_zones = @("us-east-1")
+#$storage_types = @("azure")
 
 #$cluster_types = @("aws")
 #$clusters = @("eks-hpcc-3")
 #$region_zones = @("us-east-1")
 #$storage_types = @("efs")
 
-#$cluster_types = @("gcp")
-#$clusters = @("gke-hpcc-3")
-#$region_zones = @("us-east1-b")
-#$storage_types = @("nfs")
+$cluster_types = @("gcp")
+$clusters = @("gke-hpcc-3")
+$region_zones = @("us-east1-b")
+$storage_types = @("nfs")
 
 # -------------------
 # GCP Account
@@ -34,16 +34,18 @@ $USER_INITIAL = "jm"
 
 # -------------------
 # HPCC Platform deployment
-$hpcc_namespace = "hpcc-system"
-#$hpcc_namespace = "default"
-$hpcc_version = "pilot-agent"
-#$hpcc_version = "community_7.10.8-1"
+#$hpcc_namespace = "hpcc-system"
+$hpcc_namespace = "default"
+#$hpcc_branch = "pilot-agent"
+#$hpcc_version = "pilot-agent"
+$hpcc_branch = "community_7.10.12-1"
+$hpcc_version = "7.10.12-1"
 $hpcc_cluster_name = "hpcc-anthos-test"
 $efs_id = "fs-739f91f3"
-#$hpcc_local_name = "HPCC-Platform"
-$hpcc_local_name = "HPCC-Platform-XW"
-#$git_user = "hpcc-systems"
-$git_user = "xwang2713"
+$hpcc_local_name = "HPCC-Platform"
+#$hpcc_local_name = "HPCC-Platform-XW"
+$git_user = "hpcc-systems"
+#$git_user = "xwang2713"
 
 # -------------------
 # Global Settings 

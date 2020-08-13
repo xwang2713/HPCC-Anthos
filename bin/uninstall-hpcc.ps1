@@ -37,7 +37,10 @@ for ( $i=0; $i -lt $clusters.length;  $i++)
    {
       "local storage"
    }
-   kubectl delete pv --all
+   kubectl delete jobs --all -n ${hpcc_namespace} --grace-period=0 --force
+   kubectl delete pods --all -n ${hpcc_namespace} --grace-period=0 --force
+   kubectl delete pvc --all -n ${hpcc_namespace} --grace-period=0 --force
+   kubectl delete pv --all -n ${hpcc_namespace} --grace-period=0 --force
 
 
 }

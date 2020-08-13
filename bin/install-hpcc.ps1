@@ -15,17 +15,21 @@ if (!(Test-Path -path ${HPCC_PLATFORM_DIR}))
 }
 
 cd ${HPCC_PLATFORM_DIR}
-$hpcc_branch = $(git branch | grep "^*" | grep "${hpcc_version}")
-if (${hpcc_branch} -eq $null)
+git pull
+$current_hpcc_branch = $(git branch | grep "^*" | grep "${hpcc_branch}")
+if (${current_hpcc_branch} -eq $null)
 {
-   $tag = $(git tag | grep ${hpcc_version})
+   
+   $tag = $(git tag | grep ${hpcc_branch})
    if ( $tag -eq $null )
    {
-     git checkout ${hpcc_version}
+     echo "Checkout HPCC-Platform branch : $hpcc_branch"
+     git checkout remotes/origin/${hpcc_branch}
    }
    else
    {
-     git checkout tags/${hpcc_version}
+     echo "Checkout HPCC-Platform tag : $hpcc_branch"
+     git checkout tags/${hpcc_branch}
    }
 }
 
